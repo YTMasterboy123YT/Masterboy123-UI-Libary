@@ -1,10 +1,41 @@
 return {
-    Button = require(script.Button),
-    Colorpicker = require(script.Colorpicker),
-    Dropdown = require(script.Dropdown),
-    Input = require(script.Input),
-    Keybind = require(script.Keybind),
-    Paragraph = require(script.Paragraph),
-    Slider = require(script.Slider),
-    Toggle = require(script.Toggle)
+    Icons = {
+        Close = "rbxassetid://10734898592",
+        Minimize = "rbxassetid://10734898986",
+        Maximize = "rbxassetid://10734898806",
+        Restore = "rbxassetid://10734899171",
+        Menu = "rbxassetid://10734899086",
+        Search = "rbxassetid://10734899313",
+        Settings = "rbxassetid://10734899431",
+        Notification = "rbxassetid://10734898698",
+        Warning = "rbxassetid://10734899544",
+        Error = "rbxassetid://10734898381",
+        Success = "rbxassetid://10734899431",
+        ChevronDown = "rbxassetid://10734898166",
+        ChevronUp = "rbxassetid://10734898276",
+        Lock = "rbxassetid://10734898916",
+        Unlock = "rbxassetid://10734899476"
+    },
+    
+    Fonts = {
+        Regular = Enum.Font.GothamMedium,
+        Bold = Enum.Font.GothamBold,
+        SemiBold = Enum.Font.GothamSemibold,
+        Light = Enum.Font.GothamLight
+    },
+    
+    Colors = {
+        Primary = Color3.fromRGB(0, 120, 215),
+        Secondary = Color3.fromRGB(32, 32, 32),
+        Background = Color3.fromRGB(24, 24, 24),
+        Text = Color3.fromRGB(255, 255, 255),
+        TextDark = Color3.fromRGB(180, 180, 180)
+    },
+    
+    Sounds = {
+        Click = "rbxassetid://6895079853",
+        Hover = "rbxassetid://6895079733",
+        Switch = "rbxassetid://6895079999",
+        Notification = "rbxassetid://6895079866"
+    }
 }
