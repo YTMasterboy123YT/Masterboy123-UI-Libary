@@ -1,0 +1,9 @@
+local Tab = {}
+Tab.__index = Tab
+
+function Tab.new(name)
+    -- Tab implementation
+    return setmetatable({}, Tab)
+end
+
+return Tab
