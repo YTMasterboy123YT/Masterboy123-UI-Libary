@@ -1,0 +1,9 @@
+local TitleBar = {}
+TitleBar.__index = TitleBar
+
+function TitleBar.new(title)
+    -- TitleBar implementation
+    return setmetatable({}, TitleBar)
+end
+
+return TitleBar
