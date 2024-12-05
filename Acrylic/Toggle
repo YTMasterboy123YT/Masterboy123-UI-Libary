@@ -1,0 +1,9 @@
+local Toggle = {}
+Toggle.__index = Toggle
+
+function Toggle.new(default)
+    -- Toggle implementation
+    return setmetatable({}, Toggle)
+end
+
+return Toggle
