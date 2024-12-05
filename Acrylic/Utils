@@ -1,13 +1,76 @@
 local Utils = {}
 
-function Utils.tween(instance, properties, duration)
-    local tween = game:GetService("TweenService"):Create(
+-- Services
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
+-- Utility Functions
+function Utils.tween(instance, properties, duration, style, direction)
+    local tween = TweenService:Create(
         instance,
-        TweenInfo.new(duration or 0.3),
+        TweenInfo.new(duration or 0.3, style or Enum.EasingStyle.Quad, direction or Enum.EasingDirection.Out),
         properties
     )
     tween:Play()
     return tween
+end
+
+function Utils.dragify(frame, dragSpeed)
+    dragSpeed = dragSpeed or 0.1
+    local dragToggle, dragInput, dragStart, dragPos, startPos
+    
+    local function updateInput(input)
+        local delta = input.Position - dragStart
+        frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+    
+    frame.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragToggle = true
+            dragStart = input.Position
+            startPos = frame.Position
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragToggle = false
+                end
+            end)
+        end
+    end)
+    
+    frame.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            dragInput = input
+        end
+    end)
+    
+    RunService.RenderStepped:Connect(function()
+        if dragToggle and dragInput then
+            updateInput(dragInput)
+        end
+    end)
+end
+
+function Utils.round(number, decimals)
+    decimals = decimals or 0
+    local power = 10 ^ decimals
+    return math.floor(number * power + 0.5) / power
+end
+
+function Utils.ripple(button)
+    local ripple = Instance.new("Frame")
+    ripple.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ripple.BackgroundTransparency = 0.6
+    ripple.BorderSizePixel = 0
+    ripple.AnchorPoint = Vector2.new(0.5, 0.5)
+    ripple.Size = UDim2.new(0, 0, 0, 0)
+    ripple.Parent = button
+    
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(1, 0)
+    corner.Parent = ripple
+    
+    return ripple
 end
 
 return Utils
