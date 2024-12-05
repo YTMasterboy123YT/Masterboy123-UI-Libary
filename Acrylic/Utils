@@ -1,0 +1,13 @@
+local Utils = {}
+
+function Utils.tween(instance, properties, duration)
+    local tween = game:GetService("TweenService"):Create(
+        instance,
+        TweenInfo.new(duration or 0.3),
+        properties
+    )
+    tween:Play()
+    return tween
+end
+
+return Utils
