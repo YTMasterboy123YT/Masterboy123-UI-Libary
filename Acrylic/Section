@@ -1,9 +1,43 @@
 local Section = {}
 Section.__index = Section
 
+local Assets = require(script.Parent.Parent.Assets)
+local Utils = require(script.Parent.Parent.Utils)
+
 function Section.new(name)
-    -- Section implementation
-    return setmetatable({}, Section)
+    local self = setmetatable({}, Section)
+    
+    self.instance = Instance.new("Frame")
+    self.instance.Size = UDim2.new(1, 0, 0, 36)
+    self.instance.BackgroundColor3 = Assets.Colors.Secondary
+    self.instance.AutomaticSize = Enum.AutomaticSize.Y
+    
+    -- Header
+    self.header = Instance.new("TextLabel")
+    self.header.Text = name
+    self.header.Size = UDim2.new(1, -16, 0, 36)
+    self.header.Position = UDim2.new(0, 8, 0, 0)
+    self.header.Font = Assets.Fonts.SemiBold
+    self.header.TextColor3 = Assets.Colors.Text
+    self.header.TextSize = 14
+    self.header.TextXAlignment = Enum.TextXAlignment.Left
+    self.header.BackgroundTransparency = 1
+    self.header.Parent = self.instance
+    
+    -- Content
+    self.content = Instance.new("Frame")
+    self.content.Position = UDim2.new(0, 0, 0, 36)
+    self.content.Size = UDim2.new(1, 0, 0, 0)
+    self.content.BackgroundTransparency = 1
+    self.content.AutomaticSize = Enum.AutomaticSize.Y
+    self.content.Parent = self.instance
+    
+    return self
+end
+
+function Section:AddElement(element)
+    element.instance.Parent = self.content
+    return element
 end
 
 return Section
