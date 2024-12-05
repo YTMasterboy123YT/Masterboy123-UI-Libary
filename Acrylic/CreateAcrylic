@@ -1,0 +1,11 @@
+local CreateAcrylic = {}
+local AcrylicBlur = require(script.Parent.AcrylicBlur)
+local AcrylicPaint = require(script.Parent.AcrylicPaint)
+
+function CreateAcrylic.new(frame)
+    local blur = AcrylicBlur.new()
+    local paint = AcrylicPaint.new(frame)
+    return {blur = blur, paint = paint}
+end
+
+return CreateAcrylic
