@@ -1,4 +1,6 @@
 local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Fluent.txt"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 local Settings = {WorkOut = false}
 
 local Window = Fluent:CreateWindow({
@@ -56,9 +58,14 @@ local AutoFarmToggle = AutoFarmTab:AddToggle({
     end
 })
 
--- Initial notification
-Fluent:Notify({
-    Title = "Script Loaded",
-    Content = "Auto Farm Ready",
-    Duration = 5
-})
+-- Load Managers
+SaveManager:SetLibrary(Fluent)
+InterfaceManager:SetLibrary(Fluent)
+SaveManager:IgnoreThemeSettings()
+SaveManager:SetFolder("MuscleLegendsGUI")
+InterfaceManager:SetFolder("MuscleLegendsGUI")
+
+SaveManager:BuildConfigSection(MainTab)
+InterfaceManager:BuildInterfaceSection(MainTab)
+
+Window:SelectTab(1)
