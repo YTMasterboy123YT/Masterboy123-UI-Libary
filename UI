@@ -1,30 +1,64 @@
 local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Fluent.txt"))()
+local Settings = {WorkOut = false}
 
 local Window = Fluent:CreateWindow({
-    Title = "Head Control",
+    Title = "Muscle Legends",
     SubTitle = "by dawid",
     TabWidth = 160,
     Size = UDim2.fromOffset(450, 260),
     Theme = "Dark"
 })
 
-local Tab = Window:AddTab({
+-- Create All Tabs with Icons
+local MainTab = Window:AddTab({
     Title = "Main",
-    Icon = ""
+    Icon = "rbxassetid://10723424505"
 })
 
-Tab:AddToggle({
-    Title = "Teleport All Heads",
-    Default = false,
+local AutoFarmTab = Window:AddTab({
+    Title = "Auto Farm",
+    Icon = "rbxassetid://10723346959"
+})
+
+local KillerTab = Window:AddTab({
+    Title = "Killer",
+    Icon = "rbxassetid://10723424205"
+})
+
+local StatsTab = Window:AddTab({
+    Title = "Stats",
+    Icon = "rbxassetid://10723345518"
+})
+
+-- Auto Farm Tab Content
+local selectedExercise = nil
+
+local AutoFarmDropdown = AutoFarmTab:AddDropdown({
+    Title = "Select Exercise",
+    Values = {"HandStands", "Pushups", "Situps", "Weight"},
+    Multi = false,
+    Default = "HandStands",
     Callback = function(Value)
-        _G.HeadTeleport = Value
-        while _G.HeadTeleport do
-            for _, player in pairs(game.Players:GetPlayers()) do
-                if player ~= game.Players.LocalPlayer and player.Character and player.Character:FindFirstChild("Head") then
-                    player.Character.Head.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -3)
-                end
-            end
-            task.wait(0.1)
+        selectedExercise = Value
+    end
+})
+
+local AutoFarmToggle = AutoFarmTab:AddToggle({
+    Title = "Auto Farm",
+    Default = false,
+    Callback = function(State)
+        Settings.WorkOut = State
+        
+        while wait() do
+            if Settings.WorkOut == false then break end
+            game:GetService("Players").LocalPlayer.muscleEvent:FireServer("rep")
         end
     end
+})
+
+-- Initial notification
+Fluent:Notify({
+    Title = "Script Loaded",
+    Content = "Auto Farm Ready",
+    Duration = 5
 })
