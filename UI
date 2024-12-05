@@ -1,26 +1,32 @@
+-- Load Fluent Library
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
 
+-- Create Window
 local Window = Fluent:CreateWindow({
     Title = "Head Control",
+    SubTitle = "by dawid",
     TabWidth = 160,
-    Size = UDim2.fromOffset(450, 360),
+    Size = UDim2.fromOffset(450, 260),
+    Acrylic = true,
     Theme = "Dark"
 })
 
-local MainTab = Window:AddTab({ Title = "Main" })
+-- Create Main Tab
+local MainTab = Window:AddTab({
+    Title = "Main",
+    Icon = "rbxassetid://10723424505"
+})
 
+-- Add Toggle Button
 MainTab:AddToggle({
     Title = "Teleport All Heads",
     Default = false,
-    Callback = function(value)
-        _G.HeadTeleport = value
-        
+    Callback = function(Value)
+        _G.HeadTeleport = Value
         while _G.HeadTeleport do
-            for _, player in ipairs(Players:GetPlayers()) do
-                if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("Head") then
-                    player.Character.Head.CFrame = LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -3)
+            for _, player in pairs(game.Players:GetPlayers()) do
+                if player ~= game.Players.LocalPlayer and player.Character and player.Character:FindFirstChild("Head") then
+                    player.Character.Head.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -3)
                 end
             end
             task.wait(0.1)
