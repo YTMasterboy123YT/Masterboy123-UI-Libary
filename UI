@@ -27,39 +27,51 @@ local Toggle = KillerTab:AddToggle("AutoKill", {
     Callback = function(value)
         autokillplayerlocal = value
         
-        while autokillplayerlocal do
+        RunService.Heartbeat:Connect(function()
+            if not autokillplayerlocal then return end
+            
+            local mycharacter = LocalPlayer.Character
+            if not mycharacter then return end
+            
+            local leftHand = mycharacter:FindFirstChild("LeftHand")
+            if not leftHand then return end
+            
             for _, player in pairs(Players:GetPlayers()) do
                 if player ~= LocalPlayer then
                     pcall(function()
                         local charkterkiller = player.Character
-                        local mycharacter = LocalPlayer.Character
+                        if not charkterkiller then return end
                         
-                        charkterkiller.Head.Anchored = true
-                        charkterkiller.Head.CanCollide = false
+                        local head = charkterkiller:FindFirstChild("Head")
+                        if not head then return end
                         
-                        if charkterkiller.Head.Neck.Name == "Neck" and charkterkiller.Head.nameGui then
-                            charkterkiller.Head.nameGui:Clone().Parent = charkterkiller.UpperTorso
-                            charkterkiller.Head.Neck:Destroy()
-                            charkterkiller.Head.nameGui:Destroy()
-                            charkterkiller.Head.Transparency = 1
-                            charkterkiller.Head.Face:Destroy()
+                        head.Anchored = true
+                        head.CanCollide = false
+                        
+                        if head:FindFirstChild("Neck") and head:FindFirstChild("nameGui") then
+                            head.nameGui:Clone().Parent = charkterkiller.UpperTorso
+                            head.Neck:Destroy()
+                            head.nameGui:Destroy()
+                            head.Transparency = 1
+                            if head:FindFirstChild("Face") then
+                                head.Face:Destroy()
+                            end
                         end
                         
                         LocalPlayer.muscleEvent:FireServer("punch", "leftHand")
                         LocalPlayer.muscleEvent:FireServer("punch", "rightHand")
                         
-                        charkterkiller.Head.Position = Vector3.new(mycharacter.LeftHand.Position.X, mycharacter.LeftHand.Position.Y, mycharacter.LeftHand.Position.Z)
+                        head.CFrame = leftHand.CFrame
                     end)
                 end
             end
-            RunService.Heartbeat:Wait()
-        end
+        end)
     end
 })
 
 -- Initial notification
 Fluent:Notify({
     Title = "Script Loaded",
-    Content = "Mass Head Targeting Active",
+    Content = "Enhanced Head Targeting Active",
     Duration = 5
 })
