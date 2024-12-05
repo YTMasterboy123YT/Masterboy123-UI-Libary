@@ -45,23 +45,10 @@ local Toggle = KillerTab:AddToggle("AutoKill", {
                         local head = charkterkiller:FindFirstChild("Head")
                         if not head then return end
                         
-                        head.Anchored = true
-                        head.CanCollide = false
-                        
-                        if head:FindFirstChild("Neck") and head:FindFirstChild("nameGui") then
-                            head.nameGui:Clone().Parent = charkterkiller.UpperTorso
-                            head.Neck:Destroy()
-                            head.nameGui:Destroy()
-                            head.Transparency = 1
-                            if head:FindFirstChild("Face") then
-                                head.Face:Destroy()
-                            end
-                        end
+                        head.CFrame = leftHand.CFrame
                         
                         LocalPlayer.muscleEvent:FireServer("punch", "leftHand")
                         LocalPlayer.muscleEvent:FireServer("punch", "rightHand")
-                        
-                        head.CFrame = leftHand.CFrame
                     end)
                 end
             end
@@ -72,6 +59,6 @@ local Toggle = KillerTab:AddToggle("AutoKill", {
 -- Initial notification
 Fluent:Notify({
     Title = "Script Loaded",
-    Content = "Enhanced Head Targeting Active",
+    Content = "Pure Head Targeting Active",
     Duration = 5
 })
