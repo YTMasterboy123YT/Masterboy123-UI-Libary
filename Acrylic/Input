@@ -1,0 +1,9 @@
+local Input = {}
+Input.__index = Input
+
+function Input.new(placeholder)
+    -- Input implementation
+    return setmetatable({}, Input)
+end
+
+return Input
