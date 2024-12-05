@@ -1,0 +1,9 @@
+local Textbox = {}
+Textbox.__index = Textbox
+
+function Textbox.new(placeholder)
+    -- Textbox implementation
+    return setmetatable({}, Textbox)
+end
+
+return Textbox
