@@ -2,7 +2,6 @@ local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
 
 -- Variables
 local autokillplayerlocal = false
@@ -17,53 +16,6 @@ local Window = Fluent:CreateWindow({
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl
 })
-
--- Mobile minimize button setup
-local MobileMinimize = Instance.new("TextButton")
-MobileMinimize.Size = UDim2.new(0, 30, 0, 30)
-MobileMinimize.Position = UDim2.new(0, 50, 0, 50)
-MobileMinimize.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-MobileMinimize.Text = "-"
-MobileMinimize.TextColor3 = Color3.fromRGB(255, 255, 255)
-MobileMinimize.TextSize = 20
-MobileMinimize.Parent = game.CoreGui
-
--- Draggable functionality
-local dragging
-local dragInput
-local dragStart
-local startPos
-
-MobileMinimize.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging = true
-        dragStart = input.Position
-        startPos = MobileMinimize.Position
-        
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                dragging = false
-            end
-        end)
-    end
-end)
-
-MobileMinimize.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseMovement then
-        dragInput = input
-    end
-end)
-
-UserInputService.InputChanged:Connect(function(input)
-    if input == dragInput and dragging then
-        local delta = input.Position - dragStart
-        MobileMinimize.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-    end
-end)
-
-MobileMinimize.MouseButton1Click:Connect(function()
-    Window:Minimize()
-end)
 
 -- Create Tabs
 local KillerTab = Window:AddTab({ Title = "Killer", Icon = "rbxassetid://12345678" })
@@ -83,21 +35,14 @@ local Toggle = KillerTab:AddToggle("AutoKill", {
                         local mycharacter = LocalPlayer.Character
                         
                         if charkterkiller and mycharacter then
-                            charkterkiller.Head.Anchored = true
-                            charkterkiller.Head.CanCollide = false
+                            local head = charkterkiller:FindFirstChild("Head")
+                            local leftHand = mycharacter:FindFirstChild("LeftHand")
                             
-                            if charkterkiller.Head.Neck and charkterkiller.Head.nameGui then
-                                charkterkiller.Head.nameGui:Clone().Parent = charkterkiller.UpperTorso
-                                charkterkiller.Head.Neck:Destroy()
-                                charkterkiller.Head.nameGui:Destroy()
-                                charkterkiller.Head.Transparency = 1
-                                charkterkiller.Head.Face:Destroy()
+                            if head and leftHand then
+                                head.CFrame = leftHand.CFrame
+                                LocalPlayer.muscleEvent:FireServer("punch", "leftHand")
+                                LocalPlayer.muscleEvent:FireServer("punch", "rightHand")
                             end
-                            
-                            LocalPlayer.muscleEvent:FireServer("punch", "leftHand")
-                            LocalPlayer.muscleEvent:FireServer("punch", "rightHand")
-                            
-                            charkterkiller.Head.Position = mycharacter.LeftHand.Position
                         end
                     end)
                 end
@@ -110,6 +55,6 @@ local Toggle = KillerTab:AddToggle("AutoKill", {
 -- Initial notification
 Fluent:Notify({
     Title = "Script Loaded",
-    Content = "Mass Head Targeting Ready",
+    Content = "Direct Hand Targeting Active",
     Duration = 5
 })
