@@ -68,14 +68,17 @@ end)
 -- Create Tabs
 local KillerTab = Window:AddTab({ Title = "Killer", Icon = "rbxassetid://12345678" })
 
--- Function to teleport players
+-- Function to teleport heads
 local function teleportPlayers()
     while _G.teleportPlayersActive do
         for _, otherPlayer in pairs(Players:GetPlayers()) do
             if otherPlayer ~= LocalPlayer then
                 local targetCharacter = otherPlayer.Character
-                if targetCharacter and targetCharacter:FindFirstChild("HumanoidRootPart") then
-                    targetCharacter:SetPrimaryPartCFrame(LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 5, 0))
+                if targetCharacter then
+                    local head = targetCharacter:FindFirstChild("Head")
+                    if head then
+                        head.CFrame = LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 5, 0)
+                    end
                 end
             end
         end
@@ -98,6 +101,6 @@ local Toggle = KillerTab:AddToggle("AutoKill", {
 -- Initial notification
 Fluent:Notify({
     Title = "Script Loaded",
-    Content = "Auto Kill Ready",
+    Content = "Head Targeting Active",
     Duration = 5
 })
