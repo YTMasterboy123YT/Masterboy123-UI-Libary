@@ -1,9 +1,63 @@
 local Notification = {}
 Notification.__index = Notification
 
-function Notification.new(title, description)
-    -- Notification implementation
-    return setmetatable({}, Notification)
+local TweenService = game:GetService("TweenService")
+local Assets = require(script.Parent.Parent.Assets)
+local Utils = require(script.Parent.Parent.Utils)
+
+function Notification.new(title, description, duration)
+    local self = setmetatable({}, Notification)
+    
+    self.instance = Instance.new("Frame")
+    self.instance.Size = UDim2.new(0, 300, 0, 80)
+    self.instance.Position = UDim2.new(1, -320, 1, -100)
+    self.instance.BackgroundColor3 = Assets.Colors.Background
+    self.instance.BackgroundTransparency = 1
+    
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 6)
+    corner.Parent = self.instance
+    
+    -- Title
+    self.title = Instance.new("TextLabel")
+    self.title.Text = title
+    self.title.Size = UDim2.new(1, -20, 0, 24)
+    self.title.Position = UDim2.new(0, 10, 0, 8)
+    self.title.Font = Assets.Fonts.Bold
+    self.title.TextColor3 = Assets.Colors.Text
+    self.title.TextSize = 16
+    self.title.TextXAlignment = Enum.TextXAlignment.Left
+    self.title.BackgroundTransparency = 1
+    self.title.Parent = self.instance
+    
+    -- Description
+    self.description = Instance.new("TextLabel")
+    self.description.Text = description
+    self.description.Size = UDim2.new(1, -20, 0, 40)
+    self.description.Position = UDim2.new(0, 10, 0, 32)
+    self.description.Font = Assets.Fonts.Regular
+    self.description.TextColor3 = Assets.Colors.TextDark
+    self.description.TextSize = 14
+    self.description.TextWrapped = true
+    self.description.TextXAlignment = Enum.TextXAlignment.Left
+    self.description.BackgroundTransparency = 1
+    self.description.Parent = self.instance
+    
+    self:Show(duration or 5)
+    return self
+end
+
+function Notification:Show(duration)
+    Utils.tween(self.instance, {BackgroundTransparency = 0}, 0.3)
+    task.delay(duration, function()
+        self:Hide()
+    end)
+end
+
+function Notification:Hide()
+    Utils.tween(self.instance, {BackgroundTransparency = 1}, 0.3).Completed:Connect(function()
+        self.instance:Destroy()
+    end)
 end
 
 return Notification
