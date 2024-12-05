@@ -1,0 +1,12 @@
+local Masterboy123 = {
+    _version = "1.0.0",
+    _windows = {},
+}
+
+function Masterboy123.new(title)
+    local window = require(script.Components.Window).new(title)
+    table.insert(Fluent._windows, window)
+    return window
+end
+
+return Masterboy123
