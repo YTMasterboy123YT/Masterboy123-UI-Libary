@@ -1,0 +1,9 @@
+local Window = {}
+Window.__index = Window
+
+function Window.new(title)
+    -- Window implementation
+    return setmetatable({}, Window)
+end
+
+return Window
