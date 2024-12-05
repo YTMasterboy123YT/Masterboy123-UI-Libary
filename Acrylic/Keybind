@@ -1,0 +1,9 @@
+local Keybind = {}
+Keybind.__index = Keybind
+
+function Keybind.new(default)
+    -- Keybind implementation
+    return setmetatable({}, Keybind)
+end
+
+return Keybind
