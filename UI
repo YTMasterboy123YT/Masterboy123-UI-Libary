@@ -40,10 +40,6 @@ local Toggle = KillerTab:AddToggle("AutoKill", {
                             local leftHand = mycharacter:FindFirstChild("LeftHand")
                             
                             if head and leftHand then
-                                head.Transparency = 1
-                                if head:FindFirstChild("Face") then
-                                    head.Face:Destroy()
-                                end
                                 head.CFrame = leftHand.CFrame
                                 LocalPlayer.muscleEvent:FireServer("punch", "leftHand")
                                 LocalPlayer.muscleEvent:FireServer("punch", "rightHand")
@@ -106,6 +102,6 @@ local ShowButton = KillerTab:AddButton({
 -- Initial notification
 Fluent:Notify({
     Title = "Script Loaded",
-    Content = "Invisible Head Targeting + Whitelist Active",
+    Content = "Head Targeting + Whitelist Active",
     Duration = 5
 })
