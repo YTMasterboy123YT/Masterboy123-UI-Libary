@@ -1,12 +1,41 @@
 local AcrylicPaint = {}
+AcrylicPaint.__index = AcrylicPaint
+
+-- Services
+local TweenService = game:GetService("TweenService")
+
+-- Constants
+local NOISE_ID = "rbxassetid://8884904608"
+local TRANSPARENCY = 0.98
 
 function AcrylicPaint.new(frame)
-    local paint = Instance.new("Frame")
-    paint.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    paint.BackgroundTransparency = 0.9
-    paint.Size = UDim2.fromScale(1, 1)
-    paint.Parent = frame
-    return paint
+    local self = setmetatable({}, AcrylicPaint)
+    
+    -- Create base frame
+    self.frame = Instance.new("Frame")
+    self.frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    self.frame.BackgroundTransparency = TRANSPARENCY
+    self.frame.Size = UDim2.fromScale(1, 1)
+    self.frame.Parent = frame
+    
+    -- Add noise texture
+    self.noise = Instance.new("ImageLabel")
+    self.noise.Image = NOISE_ID
+    self.noise.ScaleType = Enum.ScaleType.Tile
+    self.noise.TileSize = UDim2.new(0, 128, 0, 128)
+    self.noise.Size = UDim2.fromScale(1, 1)
+    self.noise.ImageTransparency = 0.95
+    self.noise.Parent = self.frame
+    
+    return self
+end
+
+function AcrylicPaint:SetColor(color)
+    self.frame.BackgroundColor3 = color
+end
+
+function AcrylicPaint:SetTransparency(transparency)
+    self.frame.BackgroundTransparency = transparency
 end
 
 return AcrylicPaint
