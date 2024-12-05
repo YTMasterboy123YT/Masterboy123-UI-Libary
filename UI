@@ -1,107 +1,871 @@
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local RunService = game:GetService("RunService")
 
--- Variables
-local autokillplayerlocal = false
-local whitelistedPlayers = {}
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+ 
+local Window = OrionLib:MakeWindow({Name = "Muscle Legends Y3X",IntroText = "Ty For Using Muscle Legends Y3X", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+ 
+local Tab = Window:MakeTab({
+	Name = "Main",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+ 
+--[[
+Name = <string> - The name of the tab.
+Icon = <string> - The icon of the tab.
+PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
+]]
 
--- Create window
-local Window = Fluent:CreateWindow({
-    Title = "Fluent " .. Fluent.Version,
-    SubTitle = "by dawid",
-    TabWidth = 160,
-    Size = UDim2.fromOffset(580, 460),
-    Acrylic = true,
-    Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.LeftControl
+ 
+--[[
+Name = <string> - The name of the section.
+]]
+
+Tab:AddSlider({
+	Name = "Walkspeed",
+	Min = 16,
+	Max = 800,
+	Default = 5,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "WS",
+	Callback = function(Value)
+		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+	end    
 })
 
--- Create Tabs
-local KillerTab = Window:AddTab({ Title = "Killer", Icon = "rbxassetid://12345678" })
+Tab:AddSlider({
+	Name = "JumpPower",
+	Min = 50,
+	Max = 800,
+	Default = 5,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "JP",
+	Callback = function(Value)
+		game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+	end    
+})
 
--- Toggle for auto kill
-local Toggle = KillerTab:AddToggle("AutoKill", {
-    Title = "Auto Kill All",
-    Default = false,
-    Callback = function(value)
-        autokillplayerlocal = value
-        
-        while autokillplayerlocal do
-            for _, player in pairs(Players:GetPlayers()) do
-                if player ~= LocalPlayer and not whitelistedPlayers[player.Name] then
-                    pcall(function()
-                        local charkterkiller = player.Character
-                        local mycharacter = LocalPlayer.Character
-                        
-                        if charkterkiller and mycharacter then
-                            local head = charkterkiller:FindFirstChild("Head")
-                            local leftHand = mycharacter:FindFirstChild("LeftHand")
-                            
-                            if head and leftHand then
-                                head.CFrame = leftHand.CFrame
-                                LocalPlayer.muscleEvent:FireServer("punch", "leftHand")
-                                LocalPlayer.muscleEvent:FireServer("punch", "rightHand")
-                            end
-                        end
-                    end)
-                end
+Tab:AddSlider({
+    Name = "Hip height",
+    Min = 5,
+    Max = 100,
+    Default = 5,
+    Color = Color3.fromRGB(128, 128, 128),
+    Increment = 1,
+    ValueName = "Hip Height",
+    Callback = function(HipValue)
+        game.Players.LocalPlayer.Character.Humanoid.HipHeight = HipValue
+    end    
+})
+
+
+ 
+OrionLib:MakeNotification({
+	Name = "Muscle Legends V2",
+	Content = "Thank you for using Muscle Legends V2",
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
+ 
+--[[
+Title = <string> - The title of the notification.
+Content = <string> - The content of the notification.
+Image = <string> - The icon of the notification.
+Time = <number> - The duration of the notfication.
+]]
+
+local Tab = Window:MakeTab({
+	Name = "Auto Farm",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+ 
+ 
+Tab:AddButton({
+	Name = "Train dumbbell (must have out)",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "FARM SECTION",
+            Content = "Succesfully Executed.",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+      		while true do 
+                wait(0.000000000000000000000000000000000000000000001)
+ 
+ 
+        local args = {
+            [1] = "rep"
+        }
+ 
+        game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer(unpack(args))
+ 
+ 
+ 
+ 
+    end
+ 
+  	end    
+})
+ 
+Tab:AddButton({
+	Name = "Train pushups (must have out)",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "FARM SECTION",
+            Content = "Succesfully Executed.",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+        while true do 
+            wait(0.1)
+ 
+ 
+        local args = {
+            [1] = "rep"
+        }
+ 
+        game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer(unpack(args))
+ 
+ 
+    end
+  	end    
+})
+ 
+ 
+ 
+Tab:AddButton({
+	Name = "Auto handstand (must have out)",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "FARM SECTION",
+            Content = "Succesfully Executed.",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+while true do 
+    wait(0.1)
+ 
+        local args = {
+            [1] = "rep"
+        }
+ 
+        game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer(unpack(args))
+    end
+  	end    
+})
+ 
+Tab:AddButton({
+	Name = "Auto situp (must have out)",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "FARM SECTION",
+            Content = "Succesfully Executed.",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+ 
+        while true do
+            wait(0.1)
+ 
+        local args = {
+            [1] = "rep"
+        }
+ 
+        game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer(unpack(args))
+    end
+  	end    
+})
+ 
+ 
+ 
+ 
+ 
+
+ 
+Tab:AddButton({
+	Name = "Auto Ground slam (must have out)",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "FARM SECTION",
+            Content = "Succesfully Executed.",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+      		while true do
+                wait(0.1)
+                local args = {
+                    [1] = "groundSlam"
+                }
+ 
+                game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer(unpack(args))
+ 
+ 
             end
-            RunService.Heartbeat:Wait()
+ 
+  	end    
+})
+ 
+Tab:AddButton({
+	Name = "AutoStomp (must have out)",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "FARM SECTION",
+            Content = "Succesfully Executed.",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+while true do
+    wait(0.1)
+ 
+        local args = {
+            [1] = "stomp"
+        }
+ 
+        game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer(unpack(args))
+    end
+  	end    
+})
+ 
+Tab:AddButton({
+	Name = "Auto Rebirth",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "FARM SECTION",
+            Content = "Succesfully Executed.",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+while true do
+    wait(0.1)
+ 
+        local args = {
+            [1] = "rebirthRequest"
+        }
+ 
+        game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("rebirthRemote"):InvokeServer(unpack(args))
+ 
+    end
+  	end    
+})
+ 
+
+Tab:AddButton({
+	Name = "Auto Punch",
+	Default = false,
+	Callback = function()
+		
+
+      		while true do 
+                wait(0.0000000000000000000000000000000000000000000000000000000000000000000000000000000001)
+ 
+ 
+                local args = {
+                    [1] = "punch",
+                    [2] = "leftHand"
+                }
+ 
+                game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer(unpack(args))
+ 
+ 
+ 
+            end
+ 
+            while true do 
+                wait(0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001)
+ 
+ 
+ 
+                local args = {
+                    [1] = "punch",
+                    [2] = "rightHand"
+                }
+ 
+                game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer(unpack(args))
+ 
+ 
+            end
+ 
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Auto Kill (reset to undo)",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "FARM SECTION",
+            Content = "Succesfully Executed.",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+        while true do 
+            wait(0.1)
+      		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1390.64319, 4778.96387, 1785.72974, 0.999998808, 0.000356335047, -0.00150664407, 9.28553412e-09, 0.973151505, 0.230165362, 0.00154820899, -0.230165094, 0.973150313)
         end
-    end
+  	end    
 })
 
--- Whitelist Input
-local Input = KillerTab:AddInput("WhitelistInput", {
-    Title = "Whitelist Player",
-    Default = "",
-    Placeholder = "Enter player name",
-    Callback = function(text)
-        whitelistedPlayers[text] = true
-        Fluent:Notify({
-            Title = "Whitelist",
-            Content = text .. " has been whitelisted",
-            Duration = 3
+local Tab = Window:MakeTab({
+	Name = "Teleport",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+ 
+
+Tab:AddButton({
+	Name = "Tiny island (0 rebirth)",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "ISLANDS SECTION",
+            Content = "Succesfully Executed.",
+            Image = "rbxassetid://4483345998",
+            Time = 5
         })
-    end
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(74.9859924, 38.3845634, 1936.01892, 0.766061246, -0, -0.642767608, 0, 1, -0, 0.642767608, 0, 0.766061246)
+  	end    
 })
-
--- Unwhitelist Input
-local UnwhitelistInput = KillerTab:AddInput("UnwhitelistInput", {
-    Title = "Unwhitelist Player",
-    Default = "",
-    Placeholder = "Enter player name",
-    Callback = function(text)
-        whitelistedPlayers[text] = nil
-        Fluent:Notify({
-            Title = "Whitelist",
-            Content = text .. " has been unwhitelisted",
-            Duration = 3
+ 
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+ 
+Tab:AddButton({
+	Name = "Frost Gym (1 rebirth)",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "ISLANDS SECTIONS",
+            Content = "Succesfully Executed.",
+            Image = "rbxassetid://4483345998",
+            Time = 5
         })
-    end
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2578.76929, 44.1669044, -337.800049, 0.342042685, -0, -0.939684391, 0, 1, -0, 0.939684391, 0, 0.342042685)
+  	end    
+})
+ 
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+ 
+Tab:AddButton({
+	Name = "Mythical Gym (5 rebirths)",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "ISLANDS SECTIONS",
+            Content = "Succesfully Executed.",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2215.98779, 44.1669083, 1003.12048, -0.342042685, 0, 0.939684391, 0, 1, 0, -0.939684391, 0, -0.342042685)
+  	end    
+})
+ 
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+ 
+Tab:AddButton({
+	Name = "Eternal gym (15 rebirths)",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "ISLANDS SECTIONS",
+            Content = "Succesfully Executed.",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-6779.14795, 52.7326241, -1076.8512, 0.573598742, -0, -0.81913656, 0, 1, -0, 0.81913656, 0, 0.573598742)
+  	end    
+})
+ 
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+ 
+Tab:AddButton({
+	Name = "Legends gym (30 rebirths)",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "ISLANDS SECTIONS",
+            Content = "Succesfully Executed.",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4656.5708, 1021.51953, -3826.32764, 0.933587551, -0, -0.358349502, 0, 1, -0, 0.358349502, 0, 0.933587551)
+  	end    
+})
+ 
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+ 
+Tab:AddButton({
+	Name = "Muscle King Gym (5 rebirths)",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "ISLANDS SECTIONS",
+            Content = "Succesfully Executed.",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+ 
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-8529.31738, 46.2226868, -5870.41113, 0.101473726, -0.121956997, 0.987334728, 0.0206393935, 0.992501855, 0.120474033, -0.994624197, 0.00815303065, 0.103229925)
+  	end    
+})
+ 
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+ 
+Tab:AddButton({
+	Name = "Beach map DEFUALT (0 rebirths)",
+	Callback = function()
+ 
+        OrionLib:MakeNotification({
+            Name = "ISLANDS SECTIONS",
+            Content = "Succesfully Executed.",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(202.140076, 38.3845673, 427.614868, -0.500045776, 0, -0.865998983, 0, 1, 0, 0.865998983, 0, -0.500045776)
+  	end    
+})
+ 
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+
+local Tab = Window:MakeTab({
+	Name = "Client",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+ 
+--[[
+Name = <string> - The name of the section.
+]]
+
+Tab:AddButton({
+	Name = "FPS boost",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "World/Codes",
+            Content = "Succesfully Executed",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+ 
+ 
+ 
+        _G.Settings = {
+            Players = {
+                ["Ignore Me"] = true, -- Ignore your Character
+                ["Ignore Others"] = true-- Ignore other Characters
+            },
+            Meshes = {
+                Destroy = false, -- Destroy Meshes
+                LowDetail = true -- Low detail meshes (NOT SURE IT DOES ANYTHING)
+            },
+            Images = {
+                Invisible = true, -- Invisible Images
+                LowDetail = false, -- Low detail images (NOT SURE IT DOES ANYTHING)
+                Destroy = false, -- Destroy Images
+            },
+            ["No Particles"] = true, -- Disables all ParticleEmitter, Trail, Smoke, Fire and Sparkles
+            ["No Camera Effects"] = true, -- Disables all PostEffect's (Camera/Lighting Effects)
+            ["No Explosions"] = true, -- Makes Explosion's invisible
+            ["No Clothes"] = true, -- Removes Clothing from the game
+            ["Low Water Graphics"] = true, -- Removes Water Quality
+            ["No Shadows"] = true, -- Remove Shadows
+            ["Low Rendering"] = true, -- Lower Rendering
+            ["Low Quality Parts"] = true -- Lower quality parts
+        }
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/CasperFlyModz/discord.gg-rips/main/FPSBooster.lua"))()
+  	end    
 })
 
--- Show Whitelist Button
-local ShowButton = KillerTab:AddButton({
-    Title = "Show Whitelisted Players",
-    Callback = function()
-        local players = {}
-        for player, _ in pairs(whitelistedPlayers) do
-            table.insert(players, player)
+Tab:AddButton({
+	Name = "Infinite Jump",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "MOVEMENT SECTION",
+            Content = "Succesfully Executed.",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+ 
+        local InfiniteJumpEnabled = true
+        game:GetService("UserInputService").JumpRequest:connect(function()
+        if InfiniteJumpEnabled then
+        game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
         end
-        Fluent:Notify({
-            Title = "Whitelisted Players",
-            Content = #players > 0 and table.concat(players, ", ") or "No players whitelisted",
-            Duration = 5
-        })
-    end
+        end)
+  	end    
 })
 
--- Initial notification
-Fluent:Notify({
-    Title = "Script Loaded",
-    Content = "Head Targeting + Whitelist Active",
-    Duration = 5
+
+
+Tab:AddButton({
+	Name = "Claim All Codes",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "World/Codes",
+            Content = "Succesfully Executed",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+        local args = {
+            [1] = "Epicreward500"
+        }
+ 
+        game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("codeRemote"):InvokeServer(unpack(args))
+        local args = {
+            [1] = "Frostgems10"
+        }
+ 
+        game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("codeRemote"):InvokeServer(unpack(args))
+        local args = {
+            [1] = "Galaxycrystal50"
+        }
+ 
+        game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("codeRemote"):InvokeServer(unpack(args))
+        local args = {
+            [1] = "Launch250"
+        }
+ 
+        game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("codeRemote"):InvokeServer(unpack(args))
+        local args = {
+            [1] = "Megalift50"
+        }
+ 
+        game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("codeRemote"):InvokeServer(unpack(args))
+        local args = {
+            [1] = "Millionwarriors"
+        }
+ 
+        game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("codeRemote"):InvokeServer(unpack(args))
+        local args = {
+            [1] = "Musclestorm50"
+        }
+ 
+        game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("codeRemote"):InvokeServer(unpack(args))
+        local args = {
+            [1] = "Spacegems50"
+        }
+ 
+        game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("codeRemote"):InvokeServer(unpack(args))
+        local args = {
+            [1] = "Speedy50"
+        }
+ 
+        game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("codeRemote"):InvokeServer(unpack(args))
+ 
+        local args = {
+            [1] = "Skyagility50"
+        }
+ 
+        game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("codeRemote"):InvokeServer(unpack(args))
+ 
+        local args = {
+            [1] = "Supermuscle100"
+        }
+ 
+        game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("codeRemote"):InvokeServer(unpack(args))
+ 
+        local args = {
+            [1] = "Superpunch100"
+        }
+ 
+        game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("codeRemote"):InvokeServer(unpack(args))
+ 
+ 
+  	end    
 })
+
+Tab:AddButton({
+	Name = "Claim all chests OP (claim every 6 hours)",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "FARM SECTION",
+            Content = "Succesfully Executed.",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+ 
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2546.34082, 13.9288502, -554.369568, 0, 0, -1, 0, 1, 0, 1, 0, 0)
+        wait(2)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-140.20018, 8.90768719, -288.185181, 0.996191859, 0, 0.0871884301, 0, 1, 0, -0.0871884301, 0, 0.996191859)
+        wait(2)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4694.32373, 1010.4939, -3680.2312, -0.422592998, 0, -0.906319618, 0, 1, 0, 0.906319618, 0, -0.422592998)
+        wait(2)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-6687.37402, 16.8851967, -1457.30518, 0, 0, -1, 0, 1, 0, 1, 0, 0)
+        wait(2)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2184.05957, 14.2197418, 912.511414, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+        wait(2)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new()
+ 
+ 
+  	end    
+})
+ 
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+ 
+ 
+ 
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+
+Tab:AddButton({
+	Name = "do not disturb (reset to undo)",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "FARM SECTION",
+            Content = "Succesfully Executed.",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+        while true do 
+            wait(0.1)
+      		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1390.64319, 4778.96387, 1785.72974, 0.999998808, 0.000356335047, -0.00150664407, 9.28553412e-09, 0.973151505, 0.230165362, 0.00154820899, -0.230165094, 0.973150313)
+        end
+  	end    
+})
+ 
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+ 
+Tab:AddButton({
+	Name = "Auto Accept Trades",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "FARM SECTION",
+            Content = "Succesfully Executed.",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+ 
+while true do
+    wait(0.8)
+ 
+    local args = {
+        [1] = "acceptTrade"
+    }
+ 
+    game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("tradingEvent"):FireServer(unpack(args))
+ 
+ 
+end
+ 
+ 
+ 
+  	end    
+})
+
+
+local Tab = Window:MakeTab({
+	Name = "Server",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+	Name = "Full bright",
+	Callback = function()
+        OrionLib:MakeNotification({
+            Name = "World/Codes",
+            Content = "Succesfully Executed",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+        if not _G.FullBrightExecuted then
+ 
+            _G.FullBrightEnabled = false
+ 
+            _G.NormalLightingSettings = {
+                Brightness = game:GetService("Lighting").Brightness,
+                ClockTime = game:GetService("Lighting").ClockTime,
+                FogEnd = game:GetService("Lighting").FogEnd,
+                GlobalShadows = game:GetService("Lighting").GlobalShadows,
+                Ambient = game:GetService("Lighting").Ambient
+            }
+ 
+            game:GetService("Lighting"):GetPropertyChangedSignal("Brightness"):Connect(function()
+                if game:GetService("Lighting").Brightness ~= 1 and game:GetService("Lighting").Brightness ~= _G.NormalLightingSettings.Brightness then
+                    _G.NormalLightingSettings.Brightness = game:GetService("Lighting").Brightness
+                    if not _G.FullBrightEnabled then
+                        repeat
+                            wait()
+                        until _G.FullBrightEnabled
+                    end
+                    game:GetService("Lighting").Brightness = 1
+                end
+            end)
+ 
+            game:GetService("Lighting"):GetPropertyChangedSignal("ClockTime"):Connect(function()
+                if game:GetService("Lighting").ClockTime ~= 12 and game:GetService("Lighting").ClockTime ~= _G.NormalLightingSettings.ClockTime then
+                    _G.NormalLightingSettings.ClockTime = game:GetService("Lighting").ClockTime
+                    if not _G.FullBrightEnabled then
+                        repeat
+                            wait()
+                        until _G.FullBrightEnabled
+                    end
+                    game:GetService("Lighting").ClockTime = 12
+                end
+            end)
+ 
+            game:GetService("Lighting"):GetPropertyChangedSignal("FogEnd"):Connect(function()
+                if game:GetService("Lighting").FogEnd ~= 786543 and game:GetService("Lighting").FogEnd ~= _G.NormalLightingSettings.FogEnd then
+                    _G.NormalLightingSettings.FogEnd = game:GetService("Lighting").FogEnd
+                    if not _G.FullBrightEnabled then
+                        repeat
+                            wait()
+                        until _G.FullBrightEnabled
+                    end
+                    game:GetService("Lighting").FogEnd = 786543
+                end
+            end)
+ 
+            game:GetService("Lighting"):GetPropertyChangedSignal("GlobalShadows"):Connect(function()
+                if game:GetService("Lighting").GlobalShadows ~= false and game:GetService("Lighting").GlobalShadows ~= _G.NormalLightingSettings.GlobalShadows then
+                    _G.NormalLightingSettings.GlobalShadows = game:GetService("Lighting").GlobalShadows
+                    if not _G.FullBrightEnabled then
+                        repeat
+                            wait()
+                        until _G.FullBrightEnabled
+                    end
+                    game:GetService("Lighting").GlobalShadows = false
+                end
+            end)
+ 
+            game:GetService("Lighting"):GetPropertyChangedSignal("Ambient"):Connect(function()
+                if game:GetService("Lighting").Ambient ~= Color3.fromRGB(178, 178, 178) and game:GetService("Lighting").Ambient ~= _G.NormalLightingSettings.Ambient then
+                    _G.NormalLightingSettings.Ambient = game:GetService("Lighting").Ambient
+                    if not _G.FullBrightEnabled then
+                        repeat
+                            wait()
+                        until _G.FullBrightEnabled
+                    end
+                    game:GetService("Lighting").Ambient = Color3.fromRGB(178, 178, 178)
+                end
+            end)
+ 
+            game:GetService("Lighting").Brightness = 1
+            game:GetService("Lighting").ClockTime = 12
+            game:GetService("Lighting").FogEnd = 786543
+            game:GetService("Lighting").GlobalShadows = false
+            game:GetService("Lighting").Ambient = Color3.fromRGB(178, 178, 178)
+ 
+            local LatestValue = true
+            spawn(function()
+                repeat
+                    wait()
+                until _G.FullBrightEnabled
+                while wait() do
+                    if _G.FullBrightEnabled ~= LatestValue then
+                        if not _G.FullBrightEnabled then
+                            game:GetService("Lighting").Brightness = _G.NormalLightingSettings.Brightness
+                            game:GetService("Lighting").ClockTime = _G.NormalLightingSettings.ClockTime
+                            game:GetService("Lighting").FogEnd = _G.NormalLightingSettings.FogEnd
+                            game:GetService("Lighting").GlobalShadows = _G.NormalLightingSettings.GlobalShadows
+                            game:GetService("Lighting").Ambient = _G.NormalLightingSettings.Ambient
+                        else
+                            game:GetService("Lighting").Brightness = 1
+                            game:GetService("Lighting").ClockTime = 12
+                            game:GetService("Lighting").FogEnd = 786543
+                            game:GetService("Lighting").GlobalShadows = false
+                            game:GetService("Lighting").Ambient = Color3.fromRGB(178, 178, 178)
+                        end
+                        LatestValue = not LatestValue
+                    end
+                end
+            end)
+        end
+ 
+        _G.FullBrightExecuted = true
+        _G.FullBrightEnabled = not _G.FullBrightEnabled
+  	end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Credits(READ)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+	Name = "EpicDeevvIWAW",
+	Callback = function()
+        local InfiniteJumpEnabled = true
+        game:GetService("UserInputService").JumpRequest:connect(function()
+        if InfiniteJumpEnabled then
+        game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
+        end
+        end)
+  	end    
+})
+
+Tab:AddButton({
+	Name = "YouTube: @EpicDeevvIWAW",
+	Callback = function()
+        local InfiniteJumpEnabled = true
+        game:GetService("UserInputService").JumpRequest:connect(function()
+        if InfiniteJumpEnabled then
+        game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
+        end
+        end)
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Discord: @epicdeevviwaw",
+	Callback = function()
+        local InfiniteJumpEnabled = true
+        game:GetService("UserInputService").JumpRequest:connect(function()
+        if InfiniteJumpEnabled then
+        game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
+        end
+        end)
+  	end    
+})
+
+
+
+
+local WalkPart = Instance.new("Part")
+    WalkPart.Parent = Game.Workspace
+    WalkPart.Anchored = true
+    WalkPart.Position = Vector3.new(11, -9, 78)
+    WalkPart.Size = Vector3.new(10000,0,10000)
+
+    local WalkPart = Instance.new("Part")
+    WalkPart.Parent = Game.Workspace
+    WalkPart.Anchored = true
+    WalkPart.Position = Vector3.new(-110, -9,-999)
+    WalkPart.Size = Vector3.new(10000,0,10000)
+
+    local WalkPart = Instance.new("Part")
+    WalkPart.Parent = Game.Workspace
+    WalkPart.Anchored = true
+    WalkPart.Position = Vector3.new(-110, -9,1999)
+    WalkPart.Size = Vector3.new(10000,0,10000)
+ 
+
+
+ 
+ 
+ 
+ 
+ 
