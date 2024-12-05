@@ -1,0 +1,9 @@
+local Paragraph = {}
+Paragraph.__index = Paragraph
+
+function Paragraph.new(text)
+    -- Paragraph implementation
+    return setmetatable({}, Paragraph)
+end
+
+return Paragraph
