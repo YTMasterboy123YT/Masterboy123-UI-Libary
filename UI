@@ -1,22 +1,16 @@
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Fluent.txt"))()
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
--- Create window
 local Window = Fluent:CreateWindow({
-    Title = "Fluent " .. Fluent.Version,
-    SubTitle = "by dawid",
+    Title = "Head Control",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
-    Acrylic = true,
-    Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.LeftControl
+    Theme = "Dark"
 })
 
--- Create Tabs
-local KillerTab = Window:AddTab({ Title = "Killer", Icon = "rbxassetid://12345678" })
+local KillerTab = Window:AddTab({ Title = "Killer" })
 
--- Toggle for head teleport
 local Toggle = KillerTab:AddToggle("HeadControl", {
     Title = "Teleport All Heads",
     Default = false,
@@ -34,11 +28,4 @@ local Toggle = KillerTab:AddToggle("HeadControl", {
             end
         end)
     end
-})
-
--- Initial notification
-Fluent:Notify({
-    Title = "Script Loaded",
-    Content = "Head Control Active",
-    Duration = 5
 })
