@@ -1,0 +1,9 @@
+local Slider = {}
+Slider.__index = Slider
+
+function Slider.new(min, max, default)
+    -- Slider implementation
+    return setmetatable({}, Slider)
+end
+
+return Slider
