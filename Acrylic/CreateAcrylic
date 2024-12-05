@@ -1,11 +1,37 @@
 local CreateAcrylic = {}
+
+-- Dependencies
 local AcrylicBlur = require(script.Parent.AcrylicBlur)
 local AcrylicPaint = require(script.Parent.AcrylicPaint)
 
-function CreateAcrylic.new(frame)
+function CreateAcrylic.new(frame, options)
+    options = options or {}
+    
+    -- Create components
     local blur = AcrylicBlur.new()
     local paint = AcrylicPaint.new(frame)
-    return {blur = blur, paint = paint}
+    
+    -- Apply options
+    if options.color then
+        paint:SetColor(options.color)
+    end
+    
+    if options.transparency then
+        paint:SetTransparency(options.transparency)
+    end
+    
+    -- Enable effects
+    blur:Enable()
+    
+    return {
+        blur = blur,
+        paint = paint,
+        
+        destroy = function()
+            blur:Disable()
+            paint.frame:Destroy()
+        end
+    }
 end
 
 return CreateAcrylic
