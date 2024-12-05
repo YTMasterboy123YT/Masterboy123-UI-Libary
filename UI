@@ -1,10 +1,6 @@
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
-local RunService = game:GetService("RunService")
-
--- Variables
-local autokillplayerlocal = false
 
 -- Create window
 local Window = Fluent:CreateWindow({
@@ -25,32 +21,17 @@ local Toggle = KillerTab:AddToggle("AutoKill", {
     Title = "Auto Kill All",
     Default = false,
     Callback = function(value)
-        autokillplayerlocal = value
+        _G.HeadTeleport = value
         
-        RunService.Heartbeat:Connect(function()
-            if not autokillplayerlocal then return end
-            
-            local mycharacter = LocalPlayer.Character
-            if not mycharacter then return end
-            
-            local leftHand = mycharacter:FindFirstChild("LeftHand")
-            if not leftHand then return end
-            
-            for _, player in pairs(Players:GetPlayers()) do
-                if player ~= LocalPlayer then
-                    pcall(function()
-                        local charkterkiller = player.Character
-                        if not charkterkiller then return end
-                        
-                        local head = charkterkiller:FindFirstChild("Head")
-                        if not head then return end
-                        
-                        head.CFrame = leftHand.CFrame
-                        
-                        LocalPlayer.muscleEvent:FireServer("punch", "leftHand")
+        task.spawn(function()
+            while _G.HeadTeleport do
+                for _, player in ipairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("Head") then
+                        player.Character.Head.CFrame = LocalPlayer.Character.RightHand.CFrame
                         LocalPlayer.muscleEvent:FireServer("punch", "rightHand")
-                    end)
+                    end
                 end
+                task.wait(0.1)
             end
         end)
     end
@@ -59,6 +40,6 @@ local Toggle = KillerTab:AddToggle("AutoKill", {
 -- Initial notification
 Fluent:Notify({
     Title = "Script Loaded",
-    Content = "Pure Head Targeting Active",
+    Content = "Direct Head Targeting Ready",
     Duration = 5
 })
