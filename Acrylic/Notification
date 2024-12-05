@@ -1,0 +1,9 @@
+local Notification = {}
+Notification.__index = Notification
+
+function Notification.new(title, description)
+    -- Notification implementation
+    return setmetatable({}, Notification)
+end
+
+return Notification
