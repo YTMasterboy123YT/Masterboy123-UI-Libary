@@ -5,6 +5,7 @@ local RunService = game:GetService("RunService")
 
 -- Variables
 local autokillplayerlocal = false
+local whitelistedPlayers = {}
 
 -- Create window
 local Window = Fluent:CreateWindow({
@@ -29,7 +30,7 @@ local Toggle = KillerTab:AddToggle("AutoKill", {
         
         while autokillplayerlocal do
             for _, player in pairs(Players:GetPlayers()) do
-                if player ~= LocalPlayer then
+                if player ~= LocalPlayer and not whitelistedPlayers[player.Name] then
                     pcall(function()
                         local charkterkiller = player.Character
                         local mycharacter = LocalPlayer.Character
@@ -39,6 +40,10 @@ local Toggle = KillerTab:AddToggle("AutoKill", {
                             local leftHand = mycharacter:FindFirstChild("LeftHand")
                             
                             if head and leftHand then
+                                head.Transparency = 1
+                                if head:FindFirstChild("Face") then
+                                    head.Face:Destroy()
+                                end
                                 head.CFrame = leftHand.CFrame
                                 LocalPlayer.muscleEvent:FireServer("punch", "leftHand")
                                 LocalPlayer.muscleEvent:FireServer("punch", "rightHand")
@@ -52,9 +57,55 @@ local Toggle = KillerTab:AddToggle("AutoKill", {
     end
 })
 
+-- Whitelist Input
+local Input = KillerTab:AddInput("WhitelistInput", {
+    Title = "Whitelist Player",
+    Default = "",
+    Placeholder = "Enter player name",
+    Callback = function(text)
+        whitelistedPlayers[text] = true
+        Fluent:Notify({
+            Title = "Whitelist",
+            Content = text .. " has been whitelisted",
+            Duration = 3
+        })
+    end
+})
+
+-- Unwhitelist Input
+local UnwhitelistInput = KillerTab:AddInput("UnwhitelistInput", {
+    Title = "Unwhitelist Player",
+    Default = "",
+    Placeholder = "Enter player name",
+    Callback = function(text)
+        whitelistedPlayers[text] = nil
+        Fluent:Notify({
+            Title = "Whitelist",
+            Content = text .. " has been unwhitelisted",
+            Duration = 3
+        })
+    end
+})
+
+-- Show Whitelist Button
+local ShowButton = KillerTab:AddButton({
+    Title = "Show Whitelisted Players",
+    Callback = function()
+        local players = {}
+        for player, _ in pairs(whitelistedPlayers) do
+            table.insert(players, player)
+        end
+        Fluent:Notify({
+            Title = "Whitelisted Players",
+            Content = #players > 0 and table.concat(players, ", ") or "No players whitelisted",
+            Duration = 5
+        })
+    end
+})
+
 -- Initial notification
 Fluent:Notify({
     Title = "Script Loaded",
-    Content = "Direct Hand Targeting Active",
+    Content = "Invisible Head Targeting + Whitelist Active",
     Duration = 5
 })
