@@ -1,11 +1,42 @@
 local Button = {}
 Button.__index = Button
 
+local TweenService = game:GetService("TweenService")
+local Assets = require(script.Parent.Parent.Assets)
+local Utils = require(script.Parent.Parent.Utils)
+
 function Button.new(text)
-    local button = Instance.new("TextButton")
-    button.Text = text
-    button.AutoButtonColor = false
-    return setmetatable({Instance = button}, Button)
+    local self = setmetatable({}, Button)
+    
+    self.instance = Instance.new("TextButton")
+    self.instance.Size = UDim2.new(1, 0, 0, 32)
+    self.instance.BackgroundColor3 = Assets.Colors.Primary
+    self.instance.Text = text
+    self.instance.TextColor3 = Assets.Colors.Text
+    self.instance.Font = Assets.Fonts.Regular
+    self.instance.TextSize = 14
+    self.instance.AutoButtonColor = false
+    
+    -- Add corner rounding
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 4)
+    corner.Parent = self.instance
+    
+    -- Add hover & click effects
+    self.instance.MouseEnter:Connect(function()
+        Utils.tween(self.instance, {BackgroundColor3 = Assets.Colors.Primary:Lerp(Color3.new(1,1,1), 0.1)}, 0.2)
+    end)
+    
+    self.instance.MouseLeave:Connect(function()
+        Utils.tween(self.instance, {BackgroundColor3 = Assets.Colors.Primary}, 0.2)
+    end)
+    
+    self.instance.MouseButton1Down:Connect(function()
+        Utils.tween(self.instance, {BackgroundColor3 = Assets.Colors.Primary:Lerp(Color3.new(0,0,0), 0.1)}, 0.1)
+        local ripple = Utils.ripple(self.instance)
+    end)
+    
+    return self
 end
 
 return Button
