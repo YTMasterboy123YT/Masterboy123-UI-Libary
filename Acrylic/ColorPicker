@@ -1,0 +1,9 @@
+local Colorpicker = {}
+Colorpicker.__index = Colorpicker
+
+function Colorpicker.new()
+    -- Colorpicker implementation
+    return setmetatable({}, Colorpicker)
+end
+
+return Colorpicker
