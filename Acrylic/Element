@@ -1,0 +1,8 @@
+local Element = {}
+Element.__index = Element
+
+function Element.new()
+    return setmetatable({}, Element)
+end
+
+return Element
