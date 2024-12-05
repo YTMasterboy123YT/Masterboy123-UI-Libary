@@ -1,18 +1,30 @@
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("Head Control", "DarkTheme")
+local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Fluent.txt"))()
 
-local MainTab = Window:NewTab("Main")
-local MainSection = MainTab:NewSection("Head Control")
+local Window = Fluent:CreateWindow({
+    Title = "Head Control",
+    SubTitle = "by dawid",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(450, 260),
+    Theme = "Dark"
+})
 
-MainSection:NewToggle("Teleport All Heads", "Brings all heads to you", function(state)
-    _G.HeadTeleport = state
-    
-    while _G.HeadTeleport do
-        for _, player in pairs(game.Players:GetPlayers()) do
-            if player ~= game.Players.LocalPlayer and player.Character and player.Character:FindFirstChild("Head") then
-                player.Character.Head.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -3)
+local Tab = Window:AddTab({
+    Title = "Main",
+    Icon = ""
+})
+
+Tab:AddToggle({
+    Title = "Teleport All Heads",
+    Default = false,
+    Callback = function(Value)
+        _G.HeadTeleport = Value
+        while _G.HeadTeleport do
+            for _, player in pairs(game.Players:GetPlayers()) do
+                if player ~= game.Players.LocalPlayer and player.Character and player.Character:FindFirstChild("Head") then
+                    player.Character.Head.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -3)
+                end
             end
+            task.wait(0.1)
         end
-        task.wait(0.1)
     end
-end)
+})
