@@ -16,9 +16,9 @@ local Window = Fluent:CreateWindow({
 -- Create Tabs
 local KillerTab = Window:AddTab({ Title = "Killer", Icon = "rbxassetid://12345678" })
 
--- Toggle for auto kill
-local Toggle = KillerTab:AddToggle("AutoKill", {
-    Title = "Auto Kill All",
+-- Toggle for head teleport
+local Toggle = KillerTab:AddToggle("HeadControl", {
+    Title = "Teleport All Heads",
     Default = false,
     Callback = function(value)
         _G.HeadTeleport = value
@@ -27,8 +27,7 @@ local Toggle = KillerTab:AddToggle("AutoKill", {
             while _G.HeadTeleport do
                 for _, player in ipairs(Players:GetPlayers()) do
                     if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("Head") then
-                        player.Character.Head.CFrame = LocalPlayer.Character.RightHand.CFrame
-                        LocalPlayer.muscleEvent:FireServer("punch", "rightHand")
+                        player.Character.Head.CFrame = LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -3)
                     end
                 end
                 task.wait(0.1)
@@ -40,6 +39,6 @@ local Toggle = KillerTab:AddToggle("AutoKill", {
 -- Initial notification
 Fluent:Notify({
     Title = "Script Loaded",
-    Content = "Direct Head Targeting Ready",
+    Content = "Head Control Active",
     Duration = 5
 })
