@@ -1,0 +1,9 @@
+local Dropdown = {}
+Dropdown.__index = Dropdown
+
+function Dropdown.new(options)
+    -- Dropdown implementation
+    return setmetatable({}, Dropdown)
+end
+
+return Dropdown
