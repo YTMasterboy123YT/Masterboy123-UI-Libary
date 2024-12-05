@@ -1,0 +1,12 @@
+local AcrylicPaint = {}
+
+function AcrylicPaint.new(frame)
+    local paint = Instance.new("Frame")
+    paint.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    paint.BackgroundTransparency = 0.9
+    paint.Size = UDim2.fromScale(1, 1)
+    paint.Parent = frame
+    return paint
+end
+
+return AcrylicPaint
