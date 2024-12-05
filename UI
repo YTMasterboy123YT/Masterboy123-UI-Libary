@@ -1,0 +1,201 @@
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local backpack = LocalPlayer:WaitForChild("Backpack")
+
+-- Variables
+local whitelistedPlayers = {}
+local autoHitActive = false
+local teleportPlayersActive = false
+
+-- Core Functions
+local function autoHit()
+    LocalPlayer.muscleEvent:FireServer("punch", "leftHand")
+    LocalPlayer.muscleEvent:FireServer("punch", "rightHand")
+end
+
+-- Friend check function
+local function isFriend(player)
+    return player:IsFriendsWith(LocalPlayer.UserId)
+end
+
+-- Create window
+local Window = Fluent:CreateWindow({
+    Title = "Fluent " .. Fluent.Version,
+    SubTitle = "by dawid",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = true,
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.LeftControl
+})
+
+-- Mobile minimize button setup
+local MobileMinimize = Instance.new("TextButton")
+MobileMinimize.Size = UDim2.new(0, 30, 0, 30)
+MobileMinimize.Position = UDim2.new(0, 50, 0, 50)
+MobileMinimize.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+MobileMinimize.Text = "-"
+MobileMinimize.TextColor3 = Color3.fromRGB(255, 255, 255)
+MobileMinimize.TextSize = 20
+MobileMinimize.Parent = game.CoreGui
+
+-- Draggable functionality
+local dragging
+local dragInput
+local dragStart
+local startPos
+
+MobileMinimize.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = MobileMinimize.Position
+        
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+MobileMinimize.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseMovement then
+        dragInput = input
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        local delta = input.Position - dragStart
+        MobileMinimize.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+
+MobileMinimize.MouseButton1Click:Connect(function()
+    Window:Minimize()
+end)
+
+-- Create Tabs
+local MainTab = Window:AddTab({ Title = "Main", Icon = "rbxassetid://12345678" })
+local AutoFarmTab = Window:AddTab({ Title = "Auto Farm", Icon = "rbxassetid://12345678" })
+local KillerTab = Window:AddTab({ Title = "Killer", Icon = "rbxassetid://12345678" })
+local StatsTab = Window:AddTab({ Title = "Stats", Icon = "rbxassetid://12345678" })
+local CombatTab = Window:AddTab({ Title = "Combat", Icon = "rbxassetid://12345678" })
+
+-- Combat Tab Content
+local Button = CombatTab:AddButton({
+    Title = "Teleport All Heads",
+    Description = "Brings all heads to your hand",
+    Callback = function()
+        local character = LocalPlayer.Character
+        if not character then return end
+        
+        local leftHand = character:FindFirstChild("LeftHand")
+        if not leftHand then return end
+        
+        for _, player in pairs(Players:GetPlayers()) do
+            if player ~= LocalPlayer then
+                local targetChar = player.Character
+                if targetChar then
+                    local head = targetChar:FindFirstChild("Head")
+                    if head then
+                        head.CFrame = leftHand.CFrame * CFrame.new(0, 2, 0)
+                    end
+                end
+            end
+        end
+    end
+})
+
+-- Killer Tab Content
+local Toggle = KillerTab:AddToggle("AutoKill", {
+    Title = "Auto Kill",
+    Default = false,
+    Callback = function(value)
+        autoHitActive = value
+        teleportPlayersActive = value
+    end
+})
+
+-- Main Heartbeat Connection
+RunService.Heartbeat:Connect(function()
+    if autoHitActive then autoHit() end
+    if teleportPlayersActive then teleportHeads() end
+end)
+
+-- Whitelist Input
+local Input = KillerTab:AddInput("WhitelistInput", {
+    Title = "Whitelist Player",
+    Default = "",
+    Placeholder = "Enter player name",
+    Callback = function(text)
+        for _, player in ipairs(Players:GetPlayers()) do
+            if player.Name:lower() == text:lower() then
+                table.insert(whitelistedPlayers, player.Name)
+                Fluent:Notify({
+                    Title = "Success",
+                    Content = player.Name .. " has been whitelisted",
+                    Duration = 3
+                })
+                return
+            end
+        end
+    end
+})
+
+-- Unwhitelist Input
+local UnwhitelistInput = KillerTab:AddInput("UnwhitelistInput", {
+    Title = "Unwhitelist Player",
+    Default = "",
+    Placeholder = "Enter player name to unwhitelist",
+    Callback = function(text)
+        for i, name in ipairs(whitelistedPlayers) do
+            if name:lower() == text:lower() then
+                table.remove(whitelistedPlayers, i)
+                Fluent:Notify({
+                    Title = "Success",
+                    Content = name .. " has been unwhitelisted",
+                    Duration = 3
+                })
+                return
+            end
+        end
+    end
+})
+
+-- Clear Whitelist Button
+local ClearButton = KillerTab:AddButton({
+    Title = "Clear Whitelist",
+    Callback = function()
+        table.clear(whitelistedPlayers)
+        Fluent:Notify({
+            Title = "Success",
+            Content = "Whitelist cleared",
+            Duration = 3
+        })
+    end
+})
+
+-- Show Whitelist Button
+local ShowButton = KillerTab:AddButton({
+    Title = "Show Whitelisted Players",
+    Callback = function()
+        local playerList = table.concat(whitelistedPlayers, ", ")
+        Fluent:Notify({
+            Title = "Whitelisted Players",
+            Content = playerList ~= "" and playerList or "No players whitelisted",
+            Duration = 5
+        })
+    end
+})
+
+-- Initial notification
+Fluent:Notify({
+    Title = "Script Loaded",
+    Content = "Friend Protection Active | Fast Attack Enabled",
+    Duration = 5
+})
