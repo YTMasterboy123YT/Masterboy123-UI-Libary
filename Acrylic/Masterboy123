@@ -1,12 +1,55 @@
 local Masterboy123 = {
     _version = "1.0.0",
     _windows = {},
+    _notifications = {},
+    _theme = {
+        Background = Color3.fromRGB(32, 32, 32),
+        Foreground = Color3.fromRGB(255, 255, 255),
+        Accent = Color3.fromRGB(0, 120, 215),
+        LightAccent = Color3.fromRGB(0, 140, 255),
+        DarkAccent = Color3.fromRGB(0, 100, 190)
+    }
 }
 
+-- Services
+local UserInputService = game:GetService("UserInputService")
+local CoreGui = game:GetService("CoreGui")
+local TweenService = game:GetService("TweenService")
+
+-- Core Functions
 function Masterboy123.new(title)
     local window = require(script.Components.Window).new(title)
-    table.insert(Fluent._windows, window)
+    table.insert(Masterboy123._windows, window)
     return window
 end
+
+function Masterboy123.notify(title, description, duration)
+    local notification = require(script.Components.Notification).new(title, description, duration)
+    table.insert(Masterboy123._notifications, notification)
+    return notification
+end
+
+function Masterboy123.setTheme(theme)
+    for key, value in pairs(theme) do
+        Masterboy123._theme[key] = value
+    end
+end
+
+function Masterboy123.getTheme()
+    return Masterboy123._theme
+end
+
+-- Initialize
+local function init()
+    UserInputService.InputBegan:Connect(function(input)
+        if input.KeyCode == Enum.KeyCode.RightShift then
+            for _, window in ipairs(Masterboy123._windows) do
+                window:Toggle()
+            end
+        end
+    end)
+end
+
+init()
 
 return Masterboy123
