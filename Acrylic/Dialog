@@ -1,10 +1,76 @@
 local Dialog = {}
 Dialog.__index = Dialog
 
+local TweenService = game:GetService("TweenService")
+local Assets = require(script.Parent.Parent.Assets)
+local Utils = require(script.Parent.Parent.Utils)
+local Button = require(script.Parent.Button)
+
 function Dialog.new(title, description)
-    local dialog = Instance.new("Frame")
-    -- Dialog implementation
-    return setmetatable({Instance = dialog}, Dialog)
+    local self = setmetatable({}, Dialog)
+    
+    -- Create main frame
+    self.instance = Instance.new("Frame")
+    self.instance.Size = UDim2.new(0, 400, 0, 200)
+    self.instance.Position = UDim2.new(0.5, -200, 0.5, -100)
+    self.instance.BackgroundColor3 = Assets.Colors.Background
+    self.instance.AnchorPoint = Vector2.new(0.5, 0.5)
+    self.instance.Visible = false
+    
+    -- Add corner rounding
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 8)
+    corner.Parent = self.instance
+    
+    -- Title
+    self.title = Instance.new("TextLabel")
+    self.title.Size = UDim2.new(1, -20, 0, 30)
+    self.title.Position = UDim2.new(0, 10, 0, 10)
+    self.title.Text = title
+    self.title.TextColor3 = Assets.Colors.Text
+    self.title.Font = Assets.Fonts.Bold
+    self.title.TextSize = 18
+    self.title.TextXAlignment = Enum.TextXAlignment.Left
+    self.title.BackgroundTransparency = 1
+    self.title.Parent = self.instance
+    
+    -- Description
+    self.description = Instance.new("TextLabel")
+    self.description.Size = UDim2.new(1, -20, 1, -100)
+    self.description.Position = UDim2.new(0, 10, 0, 50)
+    self.description.Text = description
+    self.description.TextColor3 = Assets.Colors.TextDark
+    self.description.Font = Assets.Fonts.Regular
+    self.description.TextSize = 14
+    self.description.TextWrapped = true
+    self.description.TextXAlignment = Enum.TextXAlignment.Left
+    self.description.BackgroundTransparency = 1
+    self.description.Parent = self.instance
+    
+    -- Buttons container
+    self.buttonContainer = Instance.new("Frame")
+    self.buttonContainer.Size = UDim2.new(1, -20, 0, 32)
+    self.buttonContainer.Position = UDim2.new(0, 10, 1, -42)
+    self.buttonContainer.BackgroundTransparency = 1
+    self.buttonContainer.Parent = self.instance
+    
+    -- Add methods for buttons and showing/hiding
+    self:_setupMethods()
+    
+    return self
+end
+
+function Dialog:_setupMethods()
+    function self:Show()
+        self.instance.Visible = true
+        Utils.tween(self.instance, {BackgroundTransparency = 0}, 0.3)
+    end
+    
+    function self:Hide()
+        Utils.tween(self.instance, {BackgroundTransparency = 1}, 0.3).Completed:Connect(function()
+            self.instance.Visible = false
+        end)
+    end
 end
 
 return Dialog
