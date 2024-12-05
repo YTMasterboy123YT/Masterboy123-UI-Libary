@@ -5,7 +5,7 @@ local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 
 -- Variables
-_G.teleportPlayersActive = false
+local autokillplayerlocal = false
 
 -- Create window
 local Window = Fluent:CreateWindow({
@@ -68,32 +68,41 @@ end)
 -- Create Tabs
 local KillerTab = Window:AddTab({ Title = "Killer", Icon = "rbxassetid://12345678" })
 
--- Function to teleport heads
-local function teleportPlayers()
-    while _G.teleportPlayersActive do
-        for _, otherPlayer in pairs(Players:GetPlayers()) do
-            if otherPlayer ~= LocalPlayer then
-                local targetCharacter = otherPlayer.Character
-                if targetCharacter then
-                    local head = targetCharacter:FindFirstChild("Head")
-                    if head then
-                        head.CFrame = LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 5, 0)
-                    end
-                end
-            end
-        end
-        RunService.Heartbeat:Wait()
-    end
-end
-
--- Killer Tab Content
+-- Toggle for auto kill
 local Toggle = KillerTab:AddToggle("AutoKill", {
-    Title = "Auto Kill",
+    Title = "Auto Kill All",
     Default = false,
     Callback = function(value)
-        _G.teleportPlayersActive = value
-        if value then
-            teleportPlayers()
+        autokillplayerlocal = value
+        
+        while autokillplayerlocal do
+            for _, player in pairs(Players:GetPlayers()) do
+                if player ~= LocalPlayer then
+                    pcall(function()
+                        local charkterkiller = player.Character
+                        local mycharacter = LocalPlayer.Character
+                        
+                        if charkterkiller and mycharacter then
+                            charkterkiller.Head.Anchored = true
+                            charkterkiller.Head.CanCollide = false
+                            
+                            if charkterkiller.Head.Neck and charkterkiller.Head.nameGui then
+                                charkterkiller.Head.nameGui:Clone().Parent = charkterkiller.UpperTorso
+                                charkterkiller.Head.Neck:Destroy()
+                                charkterkiller.Head.nameGui:Destroy()
+                                charkterkiller.Head.Transparency = 1
+                                charkterkiller.Head.Face:Destroy()
+                            end
+                            
+                            LocalPlayer.muscleEvent:FireServer("punch", "leftHand")
+                            LocalPlayer.muscleEvent:FireServer("punch", "rightHand")
+                            
+                            charkterkiller.Head.Position = mycharacter.LeftHand.Position
+                        end
+                    end)
+                end
+            end
+            RunService.Heartbeat:Wait()
         end
     end
 })
@@ -101,6 +110,6 @@ local Toggle = KillerTab:AddToggle("AutoKill", {
 -- Initial notification
 Fluent:Notify({
     Title = "Script Loaded",
-    Content = "Head Targeting Active",
+    Content = "Mass Head Targeting Ready",
     Duration = 5
 })
